@@ -18,6 +18,43 @@ res.send(session);
 });
 
 
+app.post('/webhook', async (req, res) => {
+    let data;
+    let eventType;
+    const webhookSecret = 'whsec_YOUR-KEY';
+  
+    if (webhookSecret) {
+      let event;
+      let signature = req.headers['stripe-signature'];
+  
+      try {
+        event = stripe.webhooks.constructEvent(
+          req['rawBody'],
+          signature,
+          webhookSecret
+        );
+      } catch (err) {
+        console.log(`⚠️  Webhook signature verification failed.`);
+        return res.sendStatus(400);
+      }
+      data = event.data;
+      eventType = event.type;
+    } else {
+      data = req.body.data;
+      eventType = req.body.type;
+    }
+  
+    switch (eventType) {
+      case 'checkout.session.completed':
+        console.log(data);
+        const customerId = data.object.customer;
+        const subscriptionId = data.object.subscription;
+  
+        console.log(
+          `💰 Customer ${customerId} subscribed to plan ${subscriptionId}`
+        );
+
+
 app.get('/api', (req, resp )=>{
 const apiKey = req.query.apiKey;
 resp.send({ "data":"Teste"});
