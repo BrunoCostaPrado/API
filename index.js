@@ -53,8 +53,7 @@ app.post("/checkout", async (req, res) => {
         price: "price_1JpuZLC8GKb2d3zdngLludSC",
       },
     ],
-    success_url:
-      "http://localhost:5500/sucesso.html",
+    success_url: "http://localhost:5500/sucesso.html",
     cancel_url: "http://localhost:5500/error",
   });
   res.send(session);
@@ -100,8 +99,8 @@ app.post("/webhook", async (req, res) => {
       const itemId = subscription.items.data[0].id;
 
       const { apiKey, hashedAPIKey } = generateAPIKey();
-      console.log(`User's API Key: ${apiKey}`);
-      console.log(`Hashed API Key: ${hashedAPIKey}`);
+      console.log("User's API Key: ${apiKey}");
+      console.log("Hashed API Key: ${hashedAPIKey}");
 
       customers[customerId] = {
         apikey: hashedAPIKey,
